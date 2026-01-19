@@ -1,0 +1,183 @@
+"use client";
+import React, { useState } from "react";
+import toast from "react-hot-toast";
+import axiosInstance from "../../api/lib/axiosInstance";
+
+const BookingFormModel = ({ onClose }) => {
+  const [loading, setLoading] = useState(false);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+
+    const form = new FormData(e.target);
+
+    const payload = {
+      formHeading: "Book Your Ride",
+      pickupLocation: form.get("pickup-location"),
+      pickupDate: form.get("pickup-date"),
+      returnDate: form.get("return-date"),
+      pickupTime: form.get("pickup-time"),
+      fullName: form.get("name"),
+      phone: form.get("phone"),
+      email: form.get("email"),
+    };
+
+    try {
+      const res = await axiosInstance.post("/api/ride", payload);
+
+      if (!res.data?.success) {
+        throw new Error(res.data?.message || "Booking failed");
+      }
+
+      toast.success("Booking submitted successfully!");
+      e.target.reset();
+
+      setTimeout(() => {
+        onClose?.();
+      }, 300);
+
+    } catch (error) {
+      const message =
+        error.response?.data?.message ||
+        error.message ||
+        "Something went wrong";
+
+      toast.error(message);
+      console.error("Booking Error:", error);
+
+    } finally {
+      setLoading(false);
+    }
+  };
+
+
+
+  return (
+    <div className="max-w-6xl mx-auto p-2">
+      <div className="md:p-8 p-2 rounded-xl">
+        <h2 className="text-2xl font-bold text-center mb-3">
+          Book Your Ride
+        </h2>
+
+        <p className="text-center text-sm text-gray-500 mb-6">
+          Submit your details and our team will confirm availability shortly.
+        </p>
+
+        <form onSubmit={handleSubmit} className="space-y-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div>
+              <label className="block text-sm font-semibold mb-1">
+                Pickup Location *
+              </label>
+              <select
+                name="pickup-location"
+                className="w-full p-2 border border-gray-300 rounded-md"
+                required
+              >
+                <option value="">Select location *</option>
+                <option value="Sunbury - Jackson Road">Sunbury - Jackson Road</option>
+                <option value="Melbourne CBD">Melbourne CBD</option>
+                <option value="Melbourne Airport">Melbourne Airport</option>
+                <option value="Richmond">Richmond</option>
+                <option value="Brunswick">Brunswick</option>
+                <option value="Essendon">Essendon</option>
+                <option value="Footscray">Footscray</option>
+                <option value="Werribee">Werribee</option>
+              </select>
+            </div>
+
+            <div>
+              <label className="block text-sm font-semibold mb-1">
+                Pickup Date *
+              </label>
+              <input
+                type="date"
+                name="pickup-date"
+                className="w-full p-2 border border-gray-300 rounded-md"
+                required
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-semibold mb-1">
+                Return Date *
+              </label>
+              <input
+                type="date"
+                name="return-date"
+                className="w-full p-2 border border-gray-300 rounded-md"
+                required
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-semibold mb-1">
+                Pickup Time *
+              </label>
+              <input
+                type="time"
+                name="pickup-time"
+                className="w-full p-2 border border-gray-300 rounded-md"
+                required
+              />
+            </div>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div>
+              <label className="block text-sm font-semibold mb-1">
+                Your Name *
+              </label>
+              <input
+                type="text"
+                name="name"
+                placeholder="Full Name"
+                className="w-full p-2 border border-gray-300 rounded-md"
+                required
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-semibold mb-1">
+                Your Phone *
+              </label>
+              <input
+                type="tel"
+                name="phone"
+                placeholder="+61 xxx xxx xxx"
+                className="w-full p-2 border border-gray-300 rounded-md"
+                required
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-semibold mb-1">
+                Your Email *
+              </label>
+              <input
+                type="email"
+                name="email"
+                placeholder="you@example.com"
+                className="w-full p-2 border border-gray-300 rounded-md"
+                required
+              />
+            </div>
+
+            <div className="flex items-end">
+              <button
+                type="submit"
+                disabled={loading}
+                className="w-full global-bg text-white text-[12px] p-3 font-semibold rounded-lg transition disabled:opacity-60"
+              >
+                {loading ? "Sending..." : "Send Booking Request"}
+              </button>
+            </div>
+          </div>
+
+        </form>
+      </div>
+    </div>
+  );
+};
+
+export default BookingFormModel;

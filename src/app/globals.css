@@ -1,8 +1,23 @@
+/* Add this to your globals.css or any global CSS file */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Arimo&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 @import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 :root {
-  --background: #ffffff;
+  --background: #f3f4f6;
   --foreground: #171717;
+  --site-secondary-color: #000000;
+  --site-color: #0369b1;
+  --topbar-height-mobile: 40px;
+  --topbar-height-desktop: 40px;
+  --header-height: 40px;
+  --main-site-color: #0000EE;
 }
 
 @theme inline {
@@ -12,15 +27,109 @@
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
+
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  /* font-family: 'Arimo', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; */
+     font-family: 'Montserrat', 'Arial', sans-serif;
+}
+
+.headerBtn {
+  border-radius: 50px;
+  background-color: var(--site-color);
+  color: white;
+  padding: 10px 20px;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+.main-color{
+  color: var(--main-site-color);
+}
+.headerBtn:hover {
+  background: linear-gradient(135deg, #003f96, #1d4ed8);
+  color: white;
+}
+.pageOffset{
+  padding-top: calc(var(--topbar-height-mobile) - 10px)
+}
+.page-offset {
+  padding-top: calc(var(--topbar-height-mobile) + var(--header-height));
+}
+@media (min-width: 768px) {
+  .page-offset {
+    padding-top: calc(var(--topbar-height-desktop) + var(--header-height));
+  }
+  .pageOffset{
+  padding-top: calc(var(--topbar-height-mobile) - 20px)
+}
+}
+.page-offset.scrolled {
+  padding-top: var(--header-height);
+}
+.global-color {
+  color: var(--site-color);
+}
+
+.global-bg {
+  background-color: var(--site-color);
+}
+.global-bg:hover {
+  background: linear-gradient(135deg, #003f96, #1d4ed8);
+}
+
+.global-border {
+  border-color: var(--site-color);
+}
+
+.global-secondary-color {
+  color: var(--site-secondary-color);
+}
+
+.themeDark {
+  background-color: var(--site-color);
+}
+
+@keyframes marquee {
+  0% {
+    transform: translateX(0%);
+  }
+
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-marquee {
+  animation: marquee 25s linear infinite;
+}
+
+@keyframes team-marquee {
+  0% {
+    transform: translateX(0%);
+  }
+
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-team-marquee {
+  animation: team-marquee 30s linear infinite;
+}
+
+.animate-team-marquee:hover {
+  animation-play-state: paused;
+}
+.clip-card {
+  clip-path: polygon(0 0, 100% 0, 95% 100%, 5% 100%);
+}
+
+/* Hide scrollbar */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
