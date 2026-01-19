@@ -2,12 +2,10 @@
   "name": "carrent",
   "version": "0.1.0",
   "private": true,
-  "scripts": {
+ "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start",
-    "preview": "next start -p 5175",
-    "build:preview": "next build && next start -p 5175",
+    "start": "next start -p $PORT",
     "lint": "next lint"
   },
   "dependencies": {

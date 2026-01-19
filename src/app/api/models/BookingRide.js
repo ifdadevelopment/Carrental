@@ -1,7 +1,14 @@
 import mongoose from "mongoose";
+import { statusHistorySchema } from "./common/statusHistory.js"; 
 
 const bookingRideSchema = new mongoose.Schema(
   {
+    bookingType: {
+      type: String,
+      default: "RIDE",
+      index: true,
+    },
+
     fullName: {
       type: String,
       required: true,
@@ -25,6 +32,7 @@ const bookingRideSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+
     pickupDate: {
       type: Date,
       required: true,
@@ -39,10 +47,6 @@ const bookingRideSchema = new mongoose.Schema(
       type: Date,
       default: null,
     },
-    formHeading: {
-      type: String,
-      default: "Book Your Ride",
-    },
 
     notes: {
       type: String,
@@ -53,15 +57,25 @@ const bookingRideSchema = new mongoose.Schema(
       type: String,
       enum: ["pending", "confirmed", "completed", "cancelled"],
       default: "pending",
+      index: true,
     },
 
     remark: {
       type: String,
       default: "",
     },
-  },
-  { timestamps: true }
-);
 
-export default mongoose.models.BookingRide ||
+    statusHistory: {
+      type: [statusHistorySchema],
+      default: [],
+    },
+  },
+  {
+    timestamps: true,
+  }
+);
+const BookingRide =
+  mongoose.models.BookingRide ||
   mongoose.model("BookingRide", bookingRideSchema);
+
+export default BookingRide;

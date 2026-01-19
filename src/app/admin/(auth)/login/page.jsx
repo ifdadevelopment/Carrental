@@ -7,6 +7,7 @@ import axiosInstance from "@/app/api/lib/axiosInstance";
 
 export default function AdminAuth() {
   const router = useRouter();
+
   const [tab, setTab] = useState("login");
   const [form, setForm] = useState({
     name: "",
@@ -65,133 +66,125 @@ export default function AdminAuth() {
     }
   };
 
-
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-900">
-      <div className="p-[2px] rounded-[22px] bg-gradient-to-br from-green-400 to-indigo-600 shadow-[0_0_30px_rgba(0,255,117,0.3)]">
-        <div className="rounded-[20px] bg-[#171717] hover:scale-[0.98] transition duration-200">
-          <form
-            onSubmit={handleSubmit}
-            className="flex flex-col gap-4 px-8 pt-6 pb-6 w-[320px]"
-          >
-            {/* Tabs */}
-            <div className="flex justify-center gap-6 mb-2">
-              {["login", "signup"].map((t) => (
-                <button
-                  key={t}
-                  type="button"
-                  onClick={() => setTab(t)}
-                  className={`text-sm font-semibold ${tab === t
-                      ? "text-white border-b-2 border-green-400"
-                      : "text-gray-400"
-                    }`}
-                >
-                  {t === "login" ? "Login" : "Sign Up"}
-                </button>
-              ))}
-            </div>
+    <div className="min-h-screen flex items-center justify-center bg-black">
+      <div className="w-[360px] rounded-xl bg-white text-black shadow-xl">
+        <div className="px-8 pt-6">
+          <h1 className="text-2xl font-semibold text-center">
+            {tab === "login" ? "Admin Login" : "Create Admin Account"}
+          </h1>
+          <div className="flex justify-center gap-8 mt-4 ">
+            {["login", "signup"].map((t) => (
+              <button
+                key={t}
+                type="button"
+                onClick={() => {
+                  setTab(t);
+                  setError("");
+                }}
+                className={`pb-2 text-sm font-medium transition ${tab === t
+                  ? "border-b-2 border-black text-black"
+                  : "text-gray-400 hover:text-black"
+                  }`}
+              >
+                {t === "login" ? "Sign In" : "Sign Up"}
+              </button>
+            ))}
+          </div>
+        </div>
 
-            <p className="text-center text-white text-lg font-semibold">
-              {tab === "login" ? "Admin Login" : "Create Account"}
-            </p>
+        {/* Form */}
+        <form
+          onSubmit={handleSubmit}
+          className="flex flex-col gap-4 px-8 py-6"
+        >
+          {error && (
+            <p className="text-sm text-center text-red-600">{error}</p>
+          )}
 
-            {error && (
-              <p className="text-red-500 text-sm text-center">{error}</p>
-            )}
+          {tab === "signup" && (
+            <input
+              type="text"
+              placeholder="Full Name"
+              required
+              className="border rounded-md px-4 py-2 outline-none focus:ring-2 focus:ring-black"
+              onChange={(e) =>
+                setForm({ ...form, name: e.target.value })
+              }
+            />
+          )}
 
-            {/* Name */}
-            {tab === "signup" && (
-              <div className="bg-[#171717] px-4 py-3 rounded-full shadow-inner">
-                <input
-                  type="text"
-                  placeholder="Name"
-                  required
-                  className="bg-transparent outline-none text-gray-300 w-full"
-                  onChange={(e) =>
-                    setForm({ ...form, name: e.target.value })
-                  }
-                />
-              </div>
-            )}
+          <input
+            type="email"
+            placeholder="Email address"
+            required
+            className="border rounded-md px-4 py-2 outline-none focus:ring-2 focus:ring-black"
+            onChange={(e) =>
+              setForm({ ...form, email: e.target.value })
+            }
+          />
 
-            {/* Email */}
-            <div className="bg-[#171717] px-4 py-3 rounded-full shadow-inner">
+          {/* Password */}
+          <div className="relative">
+            <input
+              type={showPassword ? "text" : "password"}
+              placeholder="Password"
+              required
+              autoComplete={tab === "login" ? "current-password" : "new-password"}
+              className="border rounded-md px-4 py-2 w-full outline-none focus:ring-2 focus:ring-black"
+              onChange={(e) =>
+                setForm({ ...form, password: e.target.value })
+              }
+            />
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500"
+            >
+              {showPassword ? <FiEyeOff /> : <FiEye />}
+            </button>
+          </div>
+
+          {/* Confirm Password */}
+          {tab === "signup" && (
+            <div className="relative">
               <input
-                type="email"
-                placeholder="Email"
+                type={showConfirmPassword ? "text" : "password"}
+                placeholder="Confirm Password"
                 required
-                className="bg-transparent outline-none text-gray-300 w-full"
+                autoComplete="new-password"
+                className="border rounded-md px-4 py-2 w-full outline-none focus:ring-2 focus:ring-black"
                 onChange={(e) =>
-                  setForm({ ...form, email: e.target.value })
-                }
-              />
-            </div>
-
-            {/* Password */}
-            <div className="relative bg-[#171717] px-4 py-3 rounded-full shadow-inner">
-              <input
-                type={showPassword ? "text" : "password"}
-                placeholder="Password"
-                required
-                className="bg-transparent outline-none text-gray-300 w-full pr-10"
-                onChange={(e) =>
-                  setForm({ ...form, password: e.target.value })
+                  setForm({
+                    ...form,
+                    confirmPassword: e.target.value,
+                  })
                 }
               />
               <button
                 type="button"
-                onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white"
+                onClick={() =>
+                  setShowConfirmPassword(!showConfirmPassword)
+                }
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500"
               >
-                {showPassword ? <FiEyeOff size={18} /> : <FiEye size={18} />}
+                {showConfirmPassword ? <FiEyeOff /> : <FiEye />}
               </button>
             </div>
+          )}
 
-            {/* Confirm Password */}
-            {tab === "signup" && (
-              <div className="relative bg-[#171717] px-4 py-3 rounded-full shadow-inner">
-                <input
-                  type={showConfirmPassword ? "text" : "password"}
-                  placeholder="Confirm Password"
-                  required
-                  className="bg-transparent outline-none text-gray-300 w-full pr-10"
-                  onChange={(e) =>
-                    setForm({
-                      ...form,
-                      confirmPassword: e.target.value,
-                    })
-                  }
-                />
-                <button
-                  type="button"
-                  onClick={() =>
-                    setShowConfirmPassword(!showConfirmPassword)
-                  }
-                  className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white"
-                >
-                  {showConfirmPassword ? (
-                    <FiEyeOff size={18} />
-                  ) : (
-                    <FiEye size={18} />
-                  )}
-                </button>
-              </div>
-            )}
-
-            {/* Submit */}
-            <button
-              type="submit"
-              disabled={loading}
-              className="mt-4 w-full bg-[#252525] text-white py-2 rounded-md hover:bg-black transition disabled:opacity-60"
-            >
-              {loading
-                ? "Please wait..."
-                : tab === "login"
-                  ? "Login"
-                  : "Create Account"}
-            </button>
-          </form>
-        </div>
+          <button
+            type="submit"
+            disabled={loading}
+            className="mt-2 bg-black text-white py-2 rounded-md font-medium hover:bg-gray-900 transition disabled:opacity-60"
+          >
+            {loading
+              ? "Please wait..."
+              : tab === "login"
+                ? "Sign In"
+                : "Create Account"}
+          </button>
+        </form>
       </div>
     </div>
   );

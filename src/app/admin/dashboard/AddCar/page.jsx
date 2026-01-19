@@ -121,10 +121,10 @@ export default function CarForm() {
 
 
   return (
-    <div className="flex justify-center min-h-screen bg-gray-100 p-4">
+    <div className="flex justify-center p-2 bg-gray-100 md:p-4">
       <form
         onSubmit={handleSubmit}
-        className="w-full max-w-md bg-white p-6 rounded-2xl shadow space-y-4"
+        className="w-full max-w-lg bg-white md:p-6 p-2 rounded-2xl shadow space-y-4"
       >
         <h2 className="text-2xl font-semibold text-blue-600">
           Add Car
@@ -136,6 +136,7 @@ export default function CarForm() {
           value={formData.carName}
           onChange={handleChange}
           required
+          className="font-medium"
         />
 
         <div className="relative">
@@ -144,13 +145,13 @@ export default function CarForm() {
             value={formData.serviceType}
             onChange={handleChange}
             required
-            className="peer w-full border rounded-xl px-3 pt-6 pb-2"
+            className="peer w-full font-semibold border rounded-xl px-3 pt-6 pb-2"
           >
             <option value="" disabled />
             <option value="CHAUFFERS">Chauffeurs</option>
             <option value="RENTAL">Rental</option>
           </select>
-          <FloatingLabel text="Service Type" />
+          <FloatingLabel text="Service Type" className="font-medium" />
         </div>
 
         <FloatingInput
@@ -160,6 +161,7 @@ export default function CarForm() {
           value={formData.seater}
           onChange={handleChange}
           required
+          className="font-medium"
         />
         {isRental && (
           <>
@@ -170,6 +172,7 @@ export default function CarForm() {
               value={formData.rentalPrice}
               onChange={handleChange}
               required
+              className="font-medium"
             />
 
             <div className="relative">
@@ -178,7 +181,7 @@ export default function CarForm() {
                 value={formData.category}
                 onChange={handleChange}
                 required
-                className="peer w-full border rounded-xl px-3 pt-6 pb-2"
+                className="peer w-full font-semibold border rounded-xl px-3 pt-6 pb-2"
               >
                 <option value="" disabled />
                 <option value="Car">Car</option>
@@ -187,7 +190,7 @@ export default function CarForm() {
                 <option value="Van">Van</option>
                 <option value="Truck">Truck</option>
               </select>
-              <FloatingLabel text="Category" />
+              <FloatingLabel text="Category" className="font-medium"/>
             </div>
 
             <FloatingInput
@@ -195,6 +198,7 @@ export default function CarForm() {
               name="amenities"
               value={formData.amenities}
               onChange={handleChange}
+              className="font-medium"
             />
           </>
         )}
@@ -207,7 +211,7 @@ export default function CarForm() {
             onChange={handleChange}
             required
             placeholder=" "
-            className="peer w-full border rounded-xl px-3 pt-6 pb-2 resize-none"
+            className="peer w-full font-medium border rounded-xl px-3 pt-6 pb-2 resize-none"
           />
           <FloatingLabel text="Car Details" />
         </div>
@@ -247,7 +251,7 @@ function FloatingInput({ label, ...props }) {
       <input
         {...props}
         placeholder=" "
-        className="peer w-full border rounded-xl px-3 pt-6 pb-2"
+        className="peer w-full font-medium border rounded-xl px-3 pt-6 pb-2"
       />
       <FloatingLabel text={label} />
     </div>
@@ -256,7 +260,7 @@ function FloatingInput({ label, ...props }) {
 
 function FloatingLabel({ text }) {
   return (
-    <label className="absolute left-3 top-2 text-xs text-gray-500 peer-placeholder-shown:top-4 peer-placeholder-shown:text-sm peer-focus:top-2 peer-focus:text-xs transition-all">
+    <label className="absolute left-3 font-semibold top-2 text-xs text-gray-500 peer-placeholder-shown:top-4 peer-placeholder-shown:text-sm peer-focus:top-2 peer-focus:text-xs transition-all">
       {text}
     </label>
   );

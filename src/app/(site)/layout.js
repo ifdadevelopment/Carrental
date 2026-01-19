@@ -8,12 +8,12 @@ import Footer from "./components/Footer";
 export default function SiteLayout({ children }) {
   return (
     <div className="page-offset">
+      <Toaster position="top-right" />
       <SiteLoader />
       <TopBar />
       <Header />
       {children}
       <Footer />
-      <Toaster position="top-right" />
     </div>
   );
 }

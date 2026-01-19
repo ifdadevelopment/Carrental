@@ -12,8 +12,6 @@ export default function FleetInfo() {
   const [isBookingFormOpen, setIsBookingFormOpen] = useState(false);
   const [selectedCar, setSelectedCar] = useState(null);
   const [loading, setLoading] = useState(false);
-
-  /* ---------------- FETCH CARS ---------------- */
   const fetchCars = async (category = "All") => {
     try {
       setLoading(true);
@@ -28,8 +26,6 @@ export default function FleetInfo() {
 
       if (json.success) {
         setCars(json.data);
-
-        // build categories once
         const uniqueCategories = [
           "All",
           ...new Set(

@@ -105,9 +105,8 @@ export default function EditCarModal({ car, onClose, onUpdated }) {
     <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center px-4">
       <form
         onSubmit={handleSubmit}
-        className="bg-white w-full max-w-2xl rounded-2xl shadow-xl max-h-[90vh] overflow-y-auto"
+        className="bg-white w-full max-w-xl rounded-2xl shadow-xl max-h-[90vh] overflow-y-auto"
       >
-        {/* Header */}
         <div className="sticky top-0 bg-white z-10 flex items-center justify-between px-8 py-4 border-b">
           <h2 className="text-xl font-semibold">
             Edit Car Details
@@ -116,8 +115,6 @@ export default function EditCarModal({ car, onClose, onUpdated }) {
             <FaTimes />
           </button>
         </div>
-
-        {/* Body */}
         <div className="px-8 py-6 space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <Input label="Car Name">

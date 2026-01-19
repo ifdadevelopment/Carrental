@@ -13,19 +13,19 @@ const ChauffeurBookingForm = () => {
     const form = new FormData(e.target);
 
     const payload = {
-      formHeading: "Chauffeur Booking Request",
-      fullName: form.get("full-name"),
-      phone: form.get("mobile"),
+       bookingType: "CHAUFFEUR",
+      fullName: form.get("fullName"),
+      phone: form.get("phone"),
       email: form.get("email"),
-      pickupLocation: form.get("pickup-suburb"),
-      dropoff: form.get("dropoff"),
-      pickupDate: form.get("pickup-date"),
-      pickupTime: form.get("pickup-time"),
-      returnDate: form.get("return-date") || null,
+      pickupLocation: form.get("pickupLocation"),
+      dropoffLocation: form.get("dropoffLocation"),
+      pickupDate: form.get("pickupDate"),
+      pickupTime: form.get("pickupTime"),
+      returnDate: form.get("returnDate") || null,
       passengers: parseInt(form.get("passengers")) || 1,
-      tripType: form.get("trip-type"),
-      flightNumber: form.get("flight-number"),
-      notes: form.get("additional-details"),
+      tripType: form.get("tripType"),
+      flightNumber: form.get("flightNumber"),
+      notes: form.get("notes"),
     };
 
     try {
@@ -62,11 +62,11 @@ const ChauffeurBookingForm = () => {
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             <div>
-              <label htmlFor="full-name" className="block text-sm font-semibold mb-1">Full Name *</label>
+              <label htmlFor="fullName" className="block text-sm font-semibold mb-1">Full Name *</label>
               <input
                 type="text"
-                id="full-name"
-                name="full-name"
+                id="fullName"
+                name="fullName"
                 placeholder="Your name"
                 className="w-full p-2 border border-gray-300 rounded-md"
               />
@@ -82,11 +82,11 @@ const ChauffeurBookingForm = () => {
               />
             </div>
             <div>
-              <label htmlFor="mobile" className="block text-sm font-semibold mb-1">Mobile Number *</label>
+              <label htmlFor="phone" className="block text-sm font-semibold mb-1">Mobile Number *</label>
               <input
                 type="tel"
-                id="mobile"
-                name="mobile"
+                id="phone"
+                name="phone"
                 placeholder="+61 4XX XXX XXX"
                 className="w-full p-2 border border-gray-300 rounded-md"
               />
@@ -94,21 +94,21 @@ const ChauffeurBookingForm = () => {
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             <div>
-              <label htmlFor="pickup-suburb" className="block text-sm font-semibold mb-1">Pickup Suburb *</label>
+              <label htmlFor="pickupLocation" className="block text-sm font-semibold mb-1">Pickup Suburb *</label>
               <input
                 type="text"
-                id="pickup-suburb"
-                name="pickup-suburb"
+                id="pickupLocation"
+                name="pickupLocation"
                 placeholder="e.g. Sunbury"
                 className="w-full p-2 border border-gray-300 rounded-md"
               />
             </div>
             <div>
-              <label htmlFor="dropoff" className="block text-sm font-semibold mb-1">Drop-off / Destination *</label>
+              <label htmlFor="dropoffLocation" className="block text-sm font-semibold mb-1">Drop-off / Destination *</label>
               <input
                 type="text"
-                id="dropoff"
-                name="dropoff"
+                id="dropoffLocation"
+                name="dropoffLocation"
                 placeholder="e.g. Melbourne Airport T1"
                 className="w-full p-2 border border-gray-300 rounded-md"
               />
@@ -131,29 +131,29 @@ const ChauffeurBookingForm = () => {
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             <div>
-              <label htmlFor="flight-number" className="block text-sm font-semibold mb-1">Flight Number (if known)</label>
+              <label htmlFor="flightNumber" className="block text-sm font-semibold mb-1">Flight Number (if known)</label>
               <input
                 type="text"
-                id="flight-number"
-                name="flight-number"
+                id="flightNumber"
+                name="flightNumber"
                 placeholder="e.g. QF400"
                 className="w-full p-2 border border-gray-300 rounded-md"
               />
             </div>
             <div>
-              <label htmlFor="pickup-date" className="block text-sm font-semibold mb-1">Pickup Date *</label>
+              <label htmlFor="pickupDate" className="block text-sm font-semibold mb-1">Pickup Date *</label>
               <input
                 type="date"
-                id="pickup-date"
-                name="pickup-date"
+                id="pickupDate"
+                name="pickupDate"
                 className="w-full p-2 border border-gray-300 rounded-md"
               />
             </div>
             <div>
-              <label htmlFor="trip-type" className="block text-sm font-semibold mb-1">Trip Type *</label>
+              <label htmlFor="tripType" className="block text-sm font-semibold mb-1">Trip Type *</label>
               <select
-                id="trip-type"
-                name="trip-type"
+                id="tripType"
+                name="tripType"
                 className="w-full p-2 border border-gray-300 rounded-md"
               >
                 <option value="">Select option</option>
@@ -168,19 +168,19 @@ const ChauffeurBookingForm = () => {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             <div>
-              <label htmlFor="pickup-time" className="block text-sm font-semibold mb-1">Pickup Time *</label>
+              <label htmlFor="pickupTime" className="block text-sm font-semibold mb-1">Pickup Time *</label>
               <input
                 type="time"
-                id="pickup-time"
-                name="pickup-time"
+                id="pickupTime"
+                name="pickupTime"
                 className="w-full p-2 border border-gray-300 rounded-md"
               />
             </div>
             <div>
-              <label htmlFor="additional-details" className="block text-sm font-semibold mb-1">Additional Details / Stops / Notes</label>
+              <label htmlFor="notes" className="block text-sm font-semibold mb-1">Additional Details / Stops / Notes</label>
               <textarea
-                id="additional-details"
-                name="additional-details"
+                id="notes"
+                name="notes"
                 placeholder="Tell us about luggage, extra stops, return trip, child seat, etc."
                 className="w-full p-2 border border-gray-300 rounded-md"
               />

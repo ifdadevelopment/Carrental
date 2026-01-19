@@ -1,31 +1,98 @@
 import mongoose from "mongoose";
+import { statusHistorySchema } from "./common/statusHistory.js";
 
-const bookingSchema = new mongoose.Schema(
+const bookingChauffeurSchema = new mongoose.Schema(
   {
-    fullName: { type: String, required: true },
-    email: { type: String, required: true },
-    phone: { type: String, required: true },
-    pickupLocation: { type: String, required: true },
-    dropoff: { type: String, required: true },
-    pickupDate: { type: Date, required: true },
-    pickupTime: { type: String, required: true },
-    returnDate: { type: Date, },
-    passengers: { type: Number, default: 1 },
+    bookingType: {
+      type: String,
+      default: "CHAUFFEUR",
+      index: true,
+    },
+
+    fullName: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+
+    email: {
+      type: String,
+      required: true,
+      lowercase: true,
+      trim: true,
+    },
+
+    phone: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+
+    pickupLocation: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+
+    dropoffLocation: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+
+    passengers: {
+      type: Number,
+      required: true,
+      min: 1,
+    },
+
+    flightNumber: {
+      type: String,
+      trim: true,
+      default: "",
+    },
+
+    pickupDate: {
+      type: Date,
+      required: true,
+    },
+
+    pickupTime: {
+      type: String,
+      required: true,
+    },
+
     tripType: { type: String },
-    flightNumber: { type: String },
-    formHeading: { type: String },
-    notes: { type: String },
+
+    notes: {
+      type: String,
+      default: "",
+    },
+
     status: {
       type: String,
       enum: ["pending", "confirmed", "completed", "cancelled"],
       default: "pending",
+      index: true,
     },
+
     remark: {
       type: String,
       default: "",
     },
+
+    statusHistory: {
+      type: [statusHistorySchema],
+      default: [],
+    },
   },
-  { timestamps: true }
+  {
+    timestamps: true,
+  }
 );
 
-export default mongoose.model("Booking", bookingSchema);
+const BookingChauffeur =
+  mongoose.models.BookingChauffeur ||
+  mongoose.model("BookingChauffeur", bookingChauffeurSchema);
+
+export default BookingChauffeur;

@@ -8,7 +8,7 @@ export default function ContactNearMe() {
   const [loading, setLoading] = useState(false);
 
   const [form, setForm] = useState({
-    name: "",
+    fullName: "",
     email: "",
     phone: "",
     serviceType: "Car Hire",
@@ -39,7 +39,7 @@ export default function ContactNearMe() {
 
       toast.success("Enquiry submitted successfully!");
       setForm({
-        name: "",
+        fullName: "",
         email: "",
         phone: "",
         serviceType: "Car Hire",
@@ -84,8 +84,8 @@ export default function ContactNearMe() {
               <label className="text-sm font-semibold">Full Name</label>
               <input
                 type="text"
-                name="name"
-                value={form.name}
+                name="fullName"
+                value={form.fullName}
                 onChange={handleChange}
                 required
                 className="w-full p-2 border border-gray-300 rounded-md"

@@ -14,18 +14,18 @@ const BookingForm = () => {
     const form = new FormData(e.target);
 
     const payload = {
-      formHeading: "Book Your Ride",
-      pickupLocation: form.get("pickup-location"),
-      pickupDate: form.get("pickup-date"),
-      returnDate: form.get("return-date"),
-      pickupTime: form.get("pickup-time"),
+      bookingType: "RIDE",
+      pickupLocation: form.get("pickupLocation"),
+      pickupDate: form.get("pickupDate"),
+      returnDate: form.get("returnDate"),
+      pickupTime: form.get("pickupTime"),
       fullName: form.get("name"),
       phone: form.get("phone"),
       email: form.get("email"),
     };
 
     try {
-      const res = await axiosInstance.post("/api/ride", payload);
+      const res = await axiosInstance.post("/api/bookings", payload);
 
       if (!res.data?.success) {
         throw new Error(res.data?.message || "Booking failed");
@@ -63,7 +63,7 @@ const BookingForm = () => {
                 Pickup Location *
               </label>
               <select
-                name="pickup-location"
+                name="pickupLocation"
                 className="w-full p-2 border border-gray-300 rounded-md"
                 required
               >
@@ -85,7 +85,7 @@ const BookingForm = () => {
               </label>
               <input
                 type="date"
-                name="pickup-date"
+                name="pickupDate"
                 className="w-full p-2 border border-gray-300 rounded-md"
                 required
               />
@@ -97,7 +97,7 @@ const BookingForm = () => {
               </label>
               <input
                 type="date"
-                name="return-date"
+                name="returnDate"
                 className="w-full p-2 border border-gray-300 rounded-md"
                 required
               />
@@ -109,7 +109,7 @@ const BookingForm = () => {
               </label>
               <input
                 type="time"
-                name="pickup-time"
+                name="pickupTime"
                 className="w-full p-2 border border-gray-300 rounded-md"
                 required
               />
