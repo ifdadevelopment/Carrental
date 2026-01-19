@@ -55,11 +55,11 @@ export default function BookingHire() {
   };
 
   return (
-    <div className="p-4 sm:p-6 bg-gray-100 min-h-screen">
+    <div className="p-4 sm:p-6 bg-gray-100">
       <h1 className="text-2xl font-bold mb-6">Booking Hire</h1>
 
       <div className="overflow-x-auto bg-white rounded-xl shadow">
-        <table className="min-w-[1000px] w-full text-sm">
+        <table className="min-w-[900px] w-full text-sm">
           <thead className="bg-gray-200">
             <tr>
               <th className="p-3 text-left">Image</th>
