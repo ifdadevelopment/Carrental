@@ -73,7 +73,7 @@ export default function AdminLayout({ children }) {
           "
         >
           <Image
-            src="/assets/logo.png"
+            src="/assets/Logo.png"
             alt="Admin Logo"
             width={36}
             height={36}
