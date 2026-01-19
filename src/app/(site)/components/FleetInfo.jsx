@@ -5,6 +5,84 @@ import Image from "next/image";
 import { AiOutlineClose } from "react-icons/ai";
 import BookingFormModel from "../modalpup/BookingFormModel.jsx";
 
+function ImageSlider({ images, alt, autoPlay = true, intervalMs = 3000 }) {
+  const [index, setIndex] = useState(0);
+  const [paused, setPaused] = useState(false);
+
+  const total = images?.length || 0;
+  const safeImages = total > 0 ? images : ["/placeholder.png"];
+
+  const next = () => {
+    setIndex((i) => (i + 1) % safeImages.length);
+  };
+
+  const prev = () => {
+    setIndex((i) => (i - 1 + safeImages.length) % safeImages.length);
+  };
+
+  // ✅ AUTO SLIDE (INFINITE)
+  useEffect(() => {
+    if (!autoPlay) return;
+    if (paused) return;
+    if (safeImages.length <= 1) return;
+
+    const id = setInterval(() => {
+      next();
+    }, intervalMs);
+
+    return () => clearInterval(id);
+    // IMPORTANT: include intervalMs + paused + images length
+  }, [autoPlay, paused, intervalMs, safeImages.length]);
+
+  return (
+    <div
+      className="relative group overflow-hidden rounded-t-lg"
+      onMouseEnter={() => setPaused(true)}
+      onMouseLeave={() => setPaused(false)}
+      onTouchStart={() => setPaused(true)}
+      onTouchEnd={() => setPaused(false)}
+    >
+      <Image
+        src={safeImages[index]}
+        alt={alt}
+        width={500}
+        height={300}
+        className="w-full h-52 object-cover transition-transform duration-300"
+      />
+
+      {/* ✅ Arrows only if multiple images */}
+      {safeImages.length > 1 && (
+        <>
+          <button
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation();
+              prev();
+            }}
+            className="absolute left-2 top-1/2 -translate-y-1/2
+              bg-black/60 text-white w-8 h-8 rounded-full
+              opacity-0 group-hover:opacity-100 transition"
+          >
+            ‹
+          </button>
+
+          <button
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation();
+              next();
+            }}
+            className="absolute right-2 top-1/2 -translate-y-1/2
+              bg-black/60 text-white w-8 h-8 rounded-full
+              opacity-0 group-hover:opacity-100 transition"
+          >
+            ›
+          </button>
+        </>
+      )}
+    </div>
+  );
+}
 export default function FleetInfo() {
   const [activeTab, setActiveTab] = useState("All");
   const [cars, setCars] = useState([]);
@@ -12,10 +90,10 @@ export default function FleetInfo() {
   const [isBookingFormOpen, setIsBookingFormOpen] = useState(false);
   const [selectedCar, setSelectedCar] = useState(null);
   const [loading, setLoading] = useState(false);
+
   const fetchCars = async (category = "All") => {
     try {
       setLoading(true);
-
       const url =
         category === "All"
           ? "/api/cars"
@@ -47,7 +125,6 @@ export default function FleetInfo() {
     fetchCars(activeTab);
   }, [activeTab]);
 
-  /* ---------------- MODAL ---------------- */
   const openBookingForm = (car) => {
     setSelectedCar(car);
     setIsBookingFormOpen(true);
@@ -66,7 +143,6 @@ export default function FleetInfo() {
   return (
     <section className="py-16 bg-white font-sans">
       <div className="max-w-6xl mx-auto px-4">
-        {/* ---------- TITLE ---------- */}
         <div className="flex items-center gap-4 mb-10">
           <span className="flex-1 h-px bg-gray-300" />
           <h1 className="text-2xl md:text-4xl font-bold whitespace-nowrap">
@@ -76,20 +152,21 @@ export default function FleetInfo() {
         </div>
 
         <p className="text-center text-gray-500 mb-8">
-          Explore our diverse range of vehicles – from economy to premium rides, luxury sedans, and commercial vans.
+          Explore our diverse range of vehicles – from economy to premium rides.
           <br />
           <strong>Custom requests? Just get in touch!</strong>
         </p>
+
+        {/* CATEGORY FILTER */}
         <div className="flex justify-center gap-4 mb-10 flex-wrap">
           {categories.map((category) => (
             <button
               key={category}
               onClick={() => setActiveTab(category)}
               className={`px-4 py-2 rounded-md border transition capitalize
-                ${
-                  activeTab === category
-                    ? "bg-black text-white"
-                    : "bg-white text-black border-gray-300 hover:bg-black hover:text-white"
+                ${activeTab === category
+                  ? "bg-black text-white"
+                  : "bg-white text-black border-gray-300 hover:bg-black hover:text-white"
                 }`}
             >
               {category}
@@ -97,7 +174,7 @@ export default function FleetInfo() {
           ))}
         </div>
 
-        {/* ---------- GRID ---------- */}
+        {/* CONTENT */}
         {loading ? (
           <p className="text-center text-gray-500">Loading cars...</p>
         ) : cars.length === 0 ? (
@@ -107,14 +184,14 @@ export default function FleetInfo() {
             {cars.map((car) => (
               <div
                 key={car._id}
-                className="bg-white overflow-hidden border rounded-lg shadow transition-all duration-300 ease-in-out hover:shadow-xl hover:-translate-y-1"
+                className="bg-white overflow-hidden border rounded-lg shadow
+                transition-all duration-300 hover:shadow-xl hover:-translate-y-1"
               >
-                <Image
-                  src={car.carImages?.[0] || "/placeholder.png"}
+                <ImageSlider
+                  images={car.carImages?.length ? car.carImages : ["/placeholder.png"]}
                   alt={car.carName}
-                  width={500}
-                  height={300}
-                  className="w-full h-52 object-cover rounded-t-lg transition-transform duration-300 ease-in-out hover:scale-105"
+                  autoPlay={true}
+                  intervalMs={2500}
                 />
 
                 <div className="p-5">
@@ -127,7 +204,7 @@ export default function FleetInfo() {
 
                     {car.serviceType === "RENTAL" && (
                       <span className="font-semibold">
-                        ${car.rentalPrice}/days
+                        ${car.rentalPrice}/day
                       </span>
                     )}
                   </div>
@@ -148,14 +225,14 @@ export default function FleetInfo() {
                   <div className="flex gap-3">
                     <a
                       href="tel:+1234567890"
-                      className="flex-1 text-center py-2 bg-blue-500 text-white rounded-full transition-colors duration-300 hover:bg-blue-600"
+                      className="flex-1 text-center py-2 bg-blue-500 text-white rounded-full hover:bg-blue-600 transition"
                     >
                       Call
                     </a>
 
                     <button
                       onClick={() => openBookingForm(car)}
-                      className="flex-1 py-2 bg-green-500 text-white rounded-full transition-colors duration-300 hover:bg-green-600"
+                      className="flex-1 py-2 bg-green-500 text-white rounded-full hover:bg-green-600 transition"
                     >
                       Book Now
                     </button>
@@ -166,6 +243,8 @@ export default function FleetInfo() {
           </div>
         )}
       </div>
+
+      {/* BOOKING MODAL */}
       {isBookingFormOpen && (
         <div
           className="fixed inset-0 z-50 bg-black/70 flex items-center justify-center px-2"
