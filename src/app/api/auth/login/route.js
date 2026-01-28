@@ -4,8 +4,6 @@ import jwt from "jsonwebtoken";
 import connectDB from "../../lib/db";
 import User from "../../models/User";
 
-
-
 export async function POST(req) {
   try {
     await connectDB();
@@ -14,7 +12,7 @@ export async function POST(req) {
 
     if (!email || !password) {
       return NextResponse.json(
-        { success: false, message: "Email and password required" },
+        { success: false, message: "Email and password are required" },
         { status: 400 }
       );
     }
@@ -22,15 +20,15 @@ export async function POST(req) {
     const user = await User.findOne({ email }).select("+password");
     if (!user) {
       return NextResponse.json(
-        { success: false, message: "Invalid credentials" },
+        { success: false, message: "Email not found" },
         { status: 401 }
       );
     }
 
-    const match = await bcrypt.compare(password, user.password);
-    if (!match) {
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
       return NextResponse.json(
-        { success: false, message: "Invalid credentials" },
+        { success: false, message: "Email or password does not match" },
         { status: 401 }
       );
     }
@@ -53,7 +51,7 @@ export async function POST(req) {
     });
   } catch (error) {
     return NextResponse.json(
-      { success: false, message: error.message },
+      { success: false, message: "Internal server error" },
       { status: 500 }
     );
   }

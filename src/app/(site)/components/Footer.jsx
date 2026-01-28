@@ -8,7 +8,6 @@ const Footer = () => {
     <footer className="bg-gray-800 text-white py-8 mt-16">
       <div className="max-w-6xl mx-auto px-4">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12">
-          {/* CONTACTS SECTION */}
           <div>
             <h3 className="text-lg font-bold mb-4">OUR CONTACTS</h3>
             <ul className="space-y-2">

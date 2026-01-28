@@ -3,7 +3,7 @@ import fs from "fs";
 import path from "path";
 import connectDB from "../../lib/db";
 import Car from "../../models/Car.model";
-
+export const runtime = "nodejs";
 const UPLOAD_DIR = path.join(process.cwd(), "public/uploads/cars");
 
 export async function GET(req, { params }) {
